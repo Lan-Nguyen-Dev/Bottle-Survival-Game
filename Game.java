@@ -2,7 +2,7 @@ import java.awt.Color;
 
 import javax.swing.JFrame;
 
-public class Game {
+public class Game implements Runnable{
     final int original_tile_size = 32;
     final int scale = 2;
 
@@ -17,6 +17,7 @@ public class Game {
     String version = "0.0";
 
     JFrame _window;
+    Thread gameThread;
 
     public Game(){
         createWindow();
@@ -28,5 +29,15 @@ public class Game {
         _window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         _window.getContentPane().setBackground(Color.BLACK);
         _window.setSize(screen_width, screen_height);
+    }
+
+    public void runGameThread(){
+        gameThread = new Thread(this);
+        gameThread.start();
+    }
+
+    @Override
+    public void run() {
+        System.out.println("The game is currently running");
     }
 }
