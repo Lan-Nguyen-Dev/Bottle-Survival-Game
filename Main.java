@@ -12,6 +12,8 @@ public class Main {
         frame.add(gamePanel);
         frame.pack();
         frame.setVisible(true);
+
+        gamePanel.runGameThread();
     }
 
 }
