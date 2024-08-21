@@ -1,25 +1,26 @@
+package main;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
+import entity.Player;
 
 public class GamePanel extends JPanel implements Runnable{
     // ===
     // Game values
     // ===
-    final int original_tile_size = 32;
-    final int scale = 2;
+    public final int original_tile_size = 32;
+    public final int scale = 2;
 
-    final int tile_size = original_tile_size * scale;
-    final int screen_col_tiles = 16;
-    final int screen_row_tiles = 10;
+    public final int tile_size = original_tile_size * scale;
+    public final int screen_col_tiles = 16;
+    public final int screen_row_tiles = 10;
 
-    final int screen_height = screen_row_tiles * tile_size;
-    final int screen_width = screen_col_tiles * tile_size;
+    public final int screen_height = screen_row_tiles * tile_size;
+    public final int screen_width = screen_col_tiles * tile_size;
 
-    final int FPS = 60;
+    public final int FPS = 60;
 
     // ===
     // Game system
@@ -30,9 +31,7 @@ public class GamePanel extends JPanel implements Runnable{
     // ===
     // Game objects
     // ===
-    int PlayerX = 2*tile_size;
-    int PlayerY = 2*tile_size;
-    int PlayerSpd = 10;
+    Player player = new Player(this, keyHandler);
 
     public GamePanel(){
         this.setPreferredSize(new Dimension(screen_width, screen_height));
@@ -49,6 +48,9 @@ public class GamePanel extends JPanel implements Runnable{
 
     @Override
     public void run() {
+        player.setDefaultValues();
+        player.getPlayerImages();
+        
         double timePerFrame = 1000000000/FPS;
         long prevTime = System.nanoTime();
         double delta = 0;
@@ -77,28 +79,12 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     public void update(){
-        if(keyHandler.isMoveDown==true){
-            PlayerY+=PlayerSpd;
-        }
-        else if(keyHandler.isMoveUp==true){
-            PlayerY-=PlayerSpd;
-        }
-        else if(keyHandler.isMoveLeft==true){
-            PlayerX-=PlayerSpd;
-        }
-        else if(keyHandler.isMoveRight==true){
-            PlayerX+=PlayerSpd;
-        }
+        player.update();
     }
 
     public void paintComponent(Graphics g){
         super.paintComponent(g);
 
-        Graphics2D g2 = (Graphics2D)g;
-
-        g2.setColor(Color.white);
-        g2.fillRect(PlayerX,PlayerY, tile_size, tile_size);
-
-        g2.dispose();
+        player.draw(g);
     }
 }
