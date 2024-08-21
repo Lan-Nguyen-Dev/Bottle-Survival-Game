@@ -2,8 +2,11 @@ package main;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
+
+import Tile.TileManager;
 import entity.Player;
 
 public class GamePanel extends JPanel implements Runnable{
@@ -11,11 +14,11 @@ public class GamePanel extends JPanel implements Runnable{
     // Game values
     // ===
     public final int original_tile_size = 32;
-    public final int scale = 2;
+    public final int scale = 3;
 
     public final int tile_size = original_tile_size * scale;
-    public final int screen_col_tiles = 16;
-    public final int screen_row_tiles = 10;
+    public final int screen_col_tiles = 12;
+    public final int screen_row_tiles = 6;
 
     public final int screen_height = screen_row_tiles * tile_size;
     public final int screen_width = screen_col_tiles * tile_size;
@@ -32,6 +35,7 @@ public class GamePanel extends JPanel implements Runnable{
     // Game objects
     // ===
     Player player = new Player(this, keyHandler);
+    TileManager tileManager = new TileManager(this);
 
     public GamePanel(){
         this.setPreferredSize(new Dimension(screen_width, screen_height));
@@ -83,8 +87,9 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     public void paintComponent(Graphics g){
-        super.paintComponent(g);
-
-        player.draw(g);
+        Graphics2D g2 = (Graphics2D)g;
+        super.paintComponent(g2);
+        tileManager.draw(g2);
+        player.draw(g2);
     }
 }

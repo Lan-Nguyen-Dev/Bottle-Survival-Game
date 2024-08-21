@@ -2,7 +2,6 @@ package entity;
 
 import main.KeyHandler;
 
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
@@ -82,8 +81,7 @@ public class Player extends Entity {
         } else spriteIndex = 1;
     }
 
-    public void draw(Graphics g){
-        Graphics2D g2 = (Graphics2D)g;
+    public void draw(Graphics2D g2){
         BufferedImage img = null;
         switch (direction) {
             case "up":
