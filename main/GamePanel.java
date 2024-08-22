@@ -42,6 +42,7 @@ public class GamePanel extends JPanel implements Runnable{
         this.setBackground(Color.BLACK);
         this.addKeyListener(keyHandler);
         this.setFocusable(true);
+        this.setDoubleBuffered(true);
     }
 
     public void runGameThread(){
