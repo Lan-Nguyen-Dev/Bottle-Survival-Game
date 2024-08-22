@@ -78,7 +78,7 @@ public class Player extends Entity {
                 spriteIndex++;
                 if(spriteIndex >= 3) spriteIndex = 1;
             }
-        } else spriteIndex = 1;
+        }
     }
 
     public void draw(Graphics2D g2){

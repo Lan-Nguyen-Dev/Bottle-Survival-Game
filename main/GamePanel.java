@@ -6,8 +6,8 @@ import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
-import Tile.TileManager;
 import entity.Player;
+import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable{
     // ===
@@ -18,7 +18,7 @@ public class GamePanel extends JPanel implements Runnable{
 
     public final int tile_size = original_tile_size * scale;
     public final int screen_col_tiles = 12;
-    public final int screen_row_tiles = 6;
+    public final int screen_row_tiles = 8;
 
     public final int screen_height = screen_row_tiles * tile_size;
     public final int screen_width = screen_col_tiles * tile_size;

@@ -3,7 +3,7 @@ import javax.swing.JFrame;
 
 public class Main {
     public static void main(String[] args) {
-        String name = "Bottle Survival";
+        String name = "Bottle Adventure";
         String version = "0.0";
 
         GamePanel gamePanel = new GamePanel();
