@@ -26,8 +26,8 @@ public class Player extends Entity {
     }
 
     public void setDefaultValues(){
-        x = 0;
-        y = 0;
+        worldX = gamePanel.tile_size*5;
+        worldY = gamePanel.tile_size*5;
         speed = 4;
     }
 
@@ -48,22 +48,22 @@ public class Player extends Entity {
 
     public void update(){
         if(keyHandler.isMoveDown==true){
-            y+=speed;
+            worldY+=speed;
             direction = "down";
             isMove = true;
         }
         else if(keyHandler.isMoveUp==true){
-            y-=speed;
+            worldY-=speed;
             direction = "up";
             isMove = true;
         }
         else if(keyHandler.isMoveLeft==true){
-            x-=speed;
+            worldX-=speed;
             direction = "left";
             isMove = true;
         }
         else if(keyHandler.isMoveRight==true){
-            x+=speed;
+            worldX+=speed;
             direction = "right";
             isMove = true;
         }
@@ -101,7 +101,10 @@ public class Player extends Entity {
                 if(spriteIndex == 2) img = right2;
                 break;
         }
-        g2.drawImage(img, x,y, gamePanel.tile_size, gamePanel.tile_size, null);
+        g2.drawImage(img, 
+        gamePanel.screen_width/2 - gamePanel.tile_size/2,
+        gamePanel.screen_height/2 - gamePanel.tile_size/2, 
+        gamePanel.tile_size, gamePanel.tile_size, null);
         
     }
 }

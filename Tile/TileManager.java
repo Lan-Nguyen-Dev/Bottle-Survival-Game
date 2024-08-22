@@ -19,8 +19,8 @@ public class TileManager {
         this.gamePanel = gp;
 
         tile = new Tile[10];
-        mapTile = new int[gamePanel.screen_row_tiles][ gamePanel.screen_col_tiles];
-        loadMap();
+        mapTile = new int[gamePanel.world_row_tiles][ gamePanel.world_col_tiles];
+        loadMap("../maps/world1.txt");
         getTileImages();
     }
 
@@ -41,16 +41,36 @@ public class TileManager {
     }
 
     public void draw(Graphics2D g2){
-        for(int i=0; i<gamePanel.screen_row_tiles;i++){
-            for(int j=0;j<gamePanel.screen_col_tiles;j++){
-                g2.drawImage(tile[mapTile[i][j]].img, j*gamePanel.tile_size, i*gamePanel.tile_size, gamePanel.tile_size, gamePanel.tile_size, null);
+
+        int playerWX = gamePanel.player.worldX;
+        int playerWY = gamePanel.player.worldY;
+
+        int screenOX = playerWX - 1/2*gamePanel.screen_width;
+        int screenOY = playerWY - 1/2*gamePanel.screen_height;
+
+        for(int i=0; i<gamePanel.world_row_tiles;i++){
+            for(int j=0;j<gamePanel.world_col_tiles;j++){
+                int tileWX = j*gamePanel.tile_size;
+                int tileWY = i*gamePanel.tile_size;
+
+                if(tileWX < screenOX - gamePanel.tile_size 
+                || tileWY < screenOY - gamePanel.tile_size
+                || tileWX > screenOX + gamePanel.screen_width
+                || tileWY > screenOY + gamePanel.screen_height) continue;
+
+                g2.drawImage(tile[mapTile[i][j]].img,
+                (tileWX - screenOX),
+                (tileWY - screenOY),
+                gamePanel.tile_size,
+                gamePanel.tile_size,
+                null);
             }
         }
     }
 
-    public void loadMap(){
+    public void loadMap(String filePath){
         try {
-            InputStream is = getClass().getResourceAsStream("../maps/map1.txt");
+            InputStream is = getClass().getResourceAsStream(filePath);
             BufferedReader br = new BufferedReader(new InputStreamReader(is));         
             
             for(int i=0; i<gamePanel.screen_row_tiles;i++){

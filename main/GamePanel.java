@@ -26,6 +26,13 @@ public class GamePanel extends JPanel implements Runnable{
     public final int FPS = 60;
 
     // ===
+    // World values
+    // ===
+
+    public int world_col_tiles = 50;
+    public int world_row_tiles = 50;
+
+    // ===
     // Game system
     // ===
     Thread gameThread;
@@ -34,7 +41,7 @@ public class GamePanel extends JPanel implements Runnable{
     // ===
     // Game objects
     // ===
-    Player player = new Player(this, keyHandler);
+    public Player player = new Player(this, keyHandler);
     TileManager tileManager = new TileManager(this);
 
     public GamePanel(){
