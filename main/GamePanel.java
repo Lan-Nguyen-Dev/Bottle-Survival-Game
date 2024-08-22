@@ -42,7 +42,8 @@ public class GamePanel extends JPanel implements Runnable{
     // Game objects
     // ===
     public Player player = new Player(this, keyHandler);
-    TileManager tileManager = new TileManager(this);
+    public TileManager tileManager = new TileManager(this);
+    public CollisionChecker cCollsion = new CollisionChecker(this);
 
     public GamePanel(){
         this.setPreferredSize(new Dimension(screen_width, screen_height));
@@ -50,6 +51,7 @@ public class GamePanel extends JPanel implements Runnable{
         this.addKeyListener(keyHandler);
         this.setFocusable(true);
         this.setDoubleBuffered(true);
+
     }
 
     public void runGameThread(){
@@ -62,7 +64,7 @@ public class GamePanel extends JPanel implements Runnable{
     public void run() {
         player.setDefaultValues();
         player.getPlayerImages();
-        
+
         double timePerFrame = 1000000000/FPS;
         long prevTime = System.nanoTime();
         double delta = 0;
@@ -83,7 +85,7 @@ public class GamePanel extends JPanel implements Runnable{
                 delta--;
             }
             if(timer >= 1000000000) {
-                System.out.println(frameRate);
+                //System.out.println(frameRate);
                 timer = 0;
                 frameRate = 0;
             }

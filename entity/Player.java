@@ -2,7 +2,9 @@ package entity;
 
 import main.KeyHandler;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
@@ -14,7 +16,7 @@ public class Player extends Entity {
     KeyHandler keyHandler;
 
     public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
-    public String direction = "down";
+    
     boolean isMove = false;
 
     int spriteIndex = 1;
@@ -26,9 +28,18 @@ public class Player extends Entity {
     }
 
     public void setDefaultValues(){
-        worldX = gamePanel.tile_size*5;
-        worldY = gamePanel.tile_size*5;
+        worldX = 0;
+        worldY = 0;
         speed = 4;
+
+        hitbox = new Rectangle();
+
+        hitbox.x = -12*gamePanel.scale;
+        hitbox.y = 4*gamePanel.scale;
+        hitbox.width = 24*gamePanel.scale;
+        hitbox.height = 11*gamePanel.scale;
+
+        collision = false;
     }
 
     public void getPlayerImages(){
@@ -47,30 +58,43 @@ public class Player extends Entity {
     }
 
     public void update(){
-        if(keyHandler.isMoveDown==true){
-            worldY+=speed;
-            direction = "down";
+        if(keyHandler.isMoveDown || keyHandler.isMoveUp || keyHandler.isMoveLeft || keyHandler.isMoveRight){
+            if(keyHandler.isMoveDown==true){
+                direction = "down";
+            }
+            else if(keyHandler.isMoveUp==true){
+                direction = "up";
+            }
+            else if(keyHandler.isMoveLeft==true){
+                direction = "left";
+            }
+            else if(keyHandler.isMoveRight==true){
+                direction = "right";
+            }
             isMove = true;
-        }
-        else if(keyHandler.isMoveUp==true){
-            worldY-=speed;
-            direction = "up";
-            isMove = true;
-        }
-        else if(keyHandler.isMoveLeft==true){
-            worldX-=speed;
-            direction = "left";
-            isMove = true;
-        }
-        else if(keyHandler.isMoveRight==true){
-            worldX+=speed;
-            direction = "right";
-            isMove = true;
-        }
-        else {
-            isMove = false;
-        }
+            collision = false;
 
+            gamePanel.cCollsion.check(this);
+            
+            if(collision == false){
+                switch (direction) {
+                    case "up":
+                        worldY-=speed;
+                        break;
+                    case "down":
+                        worldY+=speed;
+                        break;
+                    case "left":
+                        worldX-=speed;
+                        break;
+                    case "right":
+                        worldX+=speed;
+                        break;
+                }
+            }
+        }
+        else isMove = false;
+        
         if(isMove){
             spriteIndex_timer++;
             if(spriteIndex_timer>10) {
@@ -105,6 +129,11 @@ public class Player extends Entity {
         gamePanel.screen_width/2 - gamePanel.tile_size/2,
         gamePanel.screen_height/2 - gamePanel.tile_size/2, 
         gamePanel.tile_size, gamePanel.tile_size, null);
+
+        // g2.setColor(Color.white);
+        // g2.fillRect(gamePanel.screen_width/2 + hitbox.x, gamePanel.screen_height/2 + hitbox.y, hitbox.width, hitbox.height);
         
+
+        // g2.dispose();
     }
 }

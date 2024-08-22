@@ -12,16 +12,18 @@ import main.GamePanel;
 
 public class TileManager {
     GamePanel gamePanel;
-    Tile[] tile;
-    int[][] mapTile;
+    public Tile[] tile;
+    public int[][] mapTile;
 
     public TileManager(GamePanel gp){
         this.gamePanel = gp;
 
         tile = new Tile[10];
         mapTile = new int[gamePanel.world_row_tiles][ gamePanel.world_col_tiles];
-        loadMap("../maps/world1.txt");
+        
         getTileImages();
+
+        loadMap("../maps/world1.txt");
     }
 
     public void getTileImages(){
@@ -29,11 +31,20 @@ public class TileManager {
             for(int i=0;i<10;i++) tile[i] = new Tile();
 
             tile[0].img = ImageIO.read(getClass().getResourceAsStream("../res/tiles/grass.png"));
+            
             tile[1].img = ImageIO.read(getClass().getResourceAsStream("../res/tiles/water.png"));
+            tile[1].collision = true;
+
             tile[2].img = ImageIO.read(getClass().getResourceAsStream("../res/tiles/wall.png"));
+            tile[2].collision = true;
+
             tile[3].img = ImageIO.read(getClass().getResourceAsStream("../res/tiles/tree.png"));
+            tile[3].collision = true;
+
             tile[4].img = ImageIO.read(getClass().getResourceAsStream("../res/tiles/dirt.png"));
+
             tile[5].img = ImageIO.read(getClass().getResourceAsStream("../res/tiles/chest.png"));
+            tile[5].collision = true;
             
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -41,29 +52,33 @@ public class TileManager {
     }
 
     public void draw(Graphics2D g2){
-
         int playerWX = gamePanel.player.worldX;
         int playerWY = gamePanel.player.worldY;
 
-        int screenOX = playerWX - 1/2*gamePanel.screen_width;
-        int screenOY = playerWY - 1/2*gamePanel.screen_height;
+        int screenOX = playerWX - gamePanel.screen_width/2;
+        int screenOY = playerWY - gamePanel.screen_height/2;
 
         for(int i=0; i<gamePanel.world_row_tiles;i++){
             for(int j=0;j<gamePanel.world_col_tiles;j++){
                 int tileWX = j*gamePanel.tile_size;
                 int tileWY = i*gamePanel.tile_size;
 
+                int tileSX = tileWX - screenOX;
+                int tileSY = tileWY - screenOY;
+
+
                 if(tileWX < screenOX - gamePanel.tile_size 
                 || tileWY < screenOY - gamePanel.tile_size
                 || tileWX > screenOX + gamePanel.screen_width
                 || tileWY > screenOY + gamePanel.screen_height) continue;
 
-                g2.drawImage(tile[mapTile[i][j]].img,
-                (tileWX - screenOX),
-                (tileWY - screenOY),
-                gamePanel.tile_size,
-                gamePanel.tile_size,
-                null);
+                g2.drawImage(
+                    tile[mapTile[i][j]].img,
+                    (tileSX),
+                    (tileSY),
+                    gamePanel.tile_size,
+                    gamePanel.tile_size,
+                    null);
             }
         }
     }
@@ -73,10 +88,10 @@ public class TileManager {
             InputStream is = getClass().getResourceAsStream(filePath);
             BufferedReader br = new BufferedReader(new InputStreamReader(is));         
             
-            for(int i=0; i<gamePanel.screen_row_tiles;i++){
+            for(int i=0; i<gamePanel.world_row_tiles;i++){
                 String temp = br.readLine();
                 String[] numbers = temp.split(" ");
-                for(int j=0;j<gamePanel.screen_col_tiles;j++){
+                for(int j=0;j<gamePanel.world_col_tiles;j++){
                     int num = Integer.parseInt(numbers[j]);
                     mapTile[i][j] = num;
                 }
