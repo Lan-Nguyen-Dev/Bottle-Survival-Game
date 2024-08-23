@@ -1,4 +1,5 @@
 package main;
+
 import javax.swing.JFrame;
 
 public class Main {
@@ -14,6 +15,7 @@ public class Main {
         frame.pack();
         frame.setVisible(true);
 
+        gamePanel.setupGame();
         gamePanel.runGameThread();
     }
 

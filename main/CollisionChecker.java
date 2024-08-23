@@ -58,4 +58,44 @@ public class CollisionChecker {
         }
 
     }
+
+    public int checkObjects(Entity e, boolean isPlayer){
+        int index = 404;
+
+        for(int i=0;i<gamePanel.objects.length;i++){
+            if( gamePanel.objects[i]==null) continue;
+            e.hitbox.x += e.worldX;
+            e.hitbox.y += e.worldY;
+
+            gamePanel.objects[i].solidArea.x += gamePanel.objects[i].worldX;
+            gamePanel.objects[i].solidArea.y += gamePanel.objects[i].worldY;
+
+            switch (e.direction) {
+                case "up":
+                    e.hitbox.y -= e.speed;
+                    break;
+                case "down":
+                    e.hitbox.y += e.speed;
+                    break;
+                case "left":
+                    e.hitbox.x -= e.speed;
+                    break;
+                case "right":
+                    e.hitbox.x += e.speed;
+                    break;
+            }
+
+            if(e.hitbox.intersects(gamePanel.objects[i].solidArea)){
+                index = i;
+                if(gamePanel.objects[i].collision) e.collision = true;
+            }
+
+            gamePanel.objects[i].solidArea.x = gamePanel.objects[i].solidAreaDefaultX;
+            gamePanel.objects[i].solidArea.y = gamePanel.objects[i].solidAreaDefaultY;
+
+            e.hitbox.x = e.hitboxDefaultX;
+            e.hitbox.y = e.hitboxDefaultY;
+        }
+        return index;
+    }
 }

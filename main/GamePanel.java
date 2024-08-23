@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
 import entity.Player;
+import objects.OBJECT;
 import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable{
@@ -45,6 +46,9 @@ public class GamePanel extends JPanel implements Runnable{
     public TileManager tileManager = new TileManager(this);
     public CollisionChecker cCollsion = new CollisionChecker(this);
 
+    public OBJECT[] objects = new OBJECT[16];
+    public AssetSetter aSetter = new AssetSetter(this);
+
     public GamePanel(){
         this.setPreferredSize(new Dimension(screen_width, screen_height));
         this.setBackground(Color.BLACK);
@@ -52,6 +56,10 @@ public class GamePanel extends JPanel implements Runnable{
         this.setFocusable(true);
         this.setDoubleBuffered(true);
 
+    }
+
+    public void setupGame(){
+        aSetter.setObjects();
     }
 
     public void runGameThread(){
@@ -85,7 +93,7 @@ public class GamePanel extends JPanel implements Runnable{
                 delta--;
             }
             if(timer >= 1000000000) {
-                //System.out.println(frameRate);
+                System.out.println(frameRate);
                 timer = 0;
                 frameRate = 0;
             }
@@ -99,7 +107,16 @@ public class GamePanel extends JPanel implements Runnable{
     public void paintComponent(Graphics g){
         Graphics2D g2 = (Graphics2D)g;
         super.paintComponent(g2);
+
         tileManager.draw(g2);
+
+        for(int i=0;i<objects.length;i++){
+            
+            if(objects[i] != null){
+                objects[i].draw(g2, this);
+            }
+        }
+
         player.draw(g2);
     }
 }
